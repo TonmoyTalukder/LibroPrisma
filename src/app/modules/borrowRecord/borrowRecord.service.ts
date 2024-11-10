@@ -8,7 +8,7 @@ const borrowABook = async (data: IBorrowRecord) => {
         data: {
             bookId: bookId!,
             memberId: memberId!,
-            borrowDate:  new Date()
+            borrowDate: new Date()
         },
     });
 
@@ -38,31 +38,31 @@ const returnABook = async (data: IBorrowRecord) => {
 
 const getOverdueBooks = async () => {
     const currentDate = new Date();
-  
+
     const overdueRecords = await prisma.borrowRecord.findMany({
-      where: {
-        returnDate: null, // Not returned yet
-        borrowDate: {
-          lte: new Date(currentDate.setDate(currentDate.getDate() - 14)) // Borrowed more than 14 days ago
+        where: {
+            returnDate: null, // Not returned yet
+            borrowDate: {
+                lte: new Date(currentDate.setDate(currentDate.getDate() - 14)) // Borrowed more than 14 days ago
+            }
+        },
+        include: {
+            book: true,
+            member: true
         }
-      },
-      include: {
-        book: true,
-        member: true
-      }
-    });
-  
-    const overdueBooks = overdueRecords.map(record => {
-      const overdueDays = Math.floor((currentDate.getTime() - record.borrowDate.getTime()) / (1000 * 3600 * 24));
-      return {
-        borrowId: record.borrowId,
-        bookTitle: record.book.title,
-        borrowerName: record.member.name,
-        overdueDays: overdueDays
-      };
     });
 
-    if (overdueBooks.length === 0){
+    const overdueBooks = overdueRecords.map(record => {
+        const overdueDays = Math.floor((currentDate.getTime() - record.borrowDate.getTime()) / (1000 * 3600 * 24));
+        return {
+            borrowId: record.borrowId,
+            bookTitle: record.book.title,
+            borrowerName: record.member.name,
+            overdueDays: overdueDays
+        };
+    });
+
+    if (overdueBooks.length === 0) {
         return {
             data: {
                 message: "No overdue books",
@@ -77,8 +77,8 @@ const getOverdueBooks = async () => {
             }
         };
     }
-  };
-  
+};
+
 
 const getAllFromDB = async () => {
 

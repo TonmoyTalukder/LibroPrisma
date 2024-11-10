@@ -5,8 +5,6 @@ import { borrowRecordValidationSchemas } from "./borrowRecord.validation";
 
 const router = express.Router();
 
-router.get("/", borrowRecordController.getAllFromDB);
-router.get("/:id", borrowRecordController.getByIdFromDB);
 router.post(
     "/",
     validateRequest(borrowRecordValidationSchemas.borrowABook),
@@ -17,7 +15,10 @@ router.put(
     validateRequest(borrowRecordValidationSchemas.returnABook),
     borrowRecordController.returnABook
 );
-router.get("/overdue", borrowRecordController.getAllFromDB);
+router.get("/overdue", borrowRecordController.getOverdueBooks);
+
+router.get("/:id", borrowRecordController.getByIdFromDB);
+router.get("/", borrowRecordController.getAllFromDB);
 
 
 export const borrowRecordRoutes = router;
