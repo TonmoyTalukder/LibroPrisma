@@ -41,7 +41,7 @@ const borrowABook: RequestHandler = catchAsync(async (req, res, next) => {
     const result = await borrowRecordService.borrowABook(data);
 
     sendResponse(res, {
-        statusCode: StatusCodes.CREATED,
+        statusCode: StatusCodes.OK,
         success: true,
         message: "Book borrowed successfully!",
         data: result

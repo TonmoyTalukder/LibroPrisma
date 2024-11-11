@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 
 export const globalErrorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
 
-    if (err.code === 'P2025' || err.code ===  "P2002") {
+    if (err.code === 'P2025' || err.code ===  "P2002" || err.code ===  "P2003") {
         res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
             success: false,
             status: StatusCodes.INTERNAL_SERVER_ERROR,

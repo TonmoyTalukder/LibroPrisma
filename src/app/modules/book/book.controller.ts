@@ -69,7 +69,7 @@ const updateBook: RequestHandler = catchAsync(async (req, res, next) => {
         statusCode: StatusCodes.OK,
         success: true,
         message: "Book updated successfully!",
-        data: result
+        data: result.data
     });
 });
 
@@ -82,7 +82,7 @@ const deleteBook: RequestHandler = catchAsync(async (req, res, next) => {
         statusCode: StatusCodes.OK,
         success: true,
         message: "Book successfully deleted!",
-        data: result
+        // data: result
     });
 });
 

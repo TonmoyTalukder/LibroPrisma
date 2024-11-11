@@ -46,7 +46,7 @@ const createMember: RequestHandler = catchAsync(async (req, res, next) => {
         statusCode: StatusCodes.CREATED,
         success: true,
         message: "Member created successfully!",
-        data: result
+        data: result.data
     });
 });
 
@@ -62,11 +62,13 @@ const updateMember: RequestHandler = catchAsync(async (req, res, next) => {
 
     const result = await memberService.updateMember(memberId, data);
 
+    const { membershipDate, ...dataWithoutMembershipDate } = result.data;
+
     sendResponse(res, {
         statusCode: StatusCodes.OK,
         success: true,
         message: "Member updated successfully!",
-        data: result
+        data: dataWithoutMembershipDate
     });
 });
 
@@ -79,7 +81,7 @@ const deleteMember: RequestHandler = catchAsync(async (req, res, next) => {
         statusCode: StatusCodes.OK,
         success: true,
         message: "Member successfully deleted!",
-        data: result
+        // data: result
     });
 });
 
