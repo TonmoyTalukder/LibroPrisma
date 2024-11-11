@@ -12,11 +12,13 @@ const getAllFromDB = async () => {
 };
 
 const getByIdFromDB = async (id: string): Promise<Member | null> => {
-    const result = await prisma.member.findUnique({
+    const result = await prisma.member.findUniqueOrThrow({
         where: {
             memberId: id
         }
     });
+
+
 
     return result;
 };
@@ -57,6 +59,12 @@ const updateMember = async (id: string, data: IMember) => {
 };
 
 const deleteMember = async (id: string) => {
+    await prisma.member.findUniqueOrThrow({
+        where: {
+            memberId: id
+        }
+    });
+    
     const result = await prisma.member.delete({
         where: { memberId: id },
     });

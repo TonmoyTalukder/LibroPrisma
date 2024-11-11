@@ -12,7 +12,7 @@ const getAllFromDB = async () => {
 };
 
 const getByIdFromDB = async (id: string): Promise<Book | null> => {
-    const result = await prisma.book.findUnique({
+    const result = await prisma.book.findUniqueOrThrow({
         where: {
             bookId: id
         }
@@ -57,6 +57,12 @@ const updateBook = async (id: string, data: IBook) => {
 };
 
 const deleteBook = async (id: string) => {
+    await prisma.book.findUniqueOrThrow({
+        where: {
+            bookId: id
+        }
+    });
+    
     const result = await prisma.book.delete({
         where: { bookId: id },
     });
