@@ -16,12 +16,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // api
+app.use('/api', router);
 app.get('/', (req: Request, res: Response) => {
     res.send({
         message: "LibroPrisma server..."
     })
 });
-app.use('/api', router);
 
 // middleware
 app.use(globalErrorHandler);
