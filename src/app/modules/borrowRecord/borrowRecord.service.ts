@@ -4,6 +4,21 @@ import { IBorrowRecord } from "./borrowRecord.interface";
 
 const borrowABook = async (data: IBorrowRecord) => {
     const { bookId, memberId } = data;
+    const existingRecord = await prisma.borrowRecord.findFirst({
+        where: {
+            bookId: bookId!,
+            memberId: memberId!,
+            returnDate: null, // Not yet returned
+        },
+    });
+
+    if (existingRecord) {
+        return {
+            success: false,
+            message: `This book is already borrowed by this member on ${existingRecord.borrowDate} and has not been returned yet.`,
+        };
+    }
+
     const result = await prisma.borrowRecord.create({
         data: {
             bookId: bookId!,
@@ -24,6 +39,18 @@ const borrowABook = async (data: IBorrowRecord) => {
 
 const returnABook = async (data: IBorrowRecord) => {
     const { borrowId } = data;
+
+    const existingRecord = await prisma.borrowRecord.findUniqueOrThrow({
+        where: { borrowId },
+    });
+
+    if (existingRecord.returnDate !== null) {
+        return {
+            success: false,
+            message: "This book has already been returned.",
+        };
+    }
+
     const result = await prisma.borrowRecord.update({
         where: { borrowId },
         data: {

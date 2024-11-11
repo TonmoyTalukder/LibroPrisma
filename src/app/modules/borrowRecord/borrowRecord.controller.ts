@@ -34,18 +34,26 @@ const borrowABook: RequestHandler = catchAsync(async (req, res, next) => {
     const { bookId, memberId } = req.body;
 
     const data = {
-        bookId, 
+        bookId,
         memberId
     }
 
     const result = await borrowRecordService.borrowABook(data);
 
-    sendResponse(res, {
-        statusCode: StatusCodes.OK,
-        success: true,
-        message: "Book borrowed successfully!",
-        data: result
-    });
+    if (result.success === false) {
+        sendResponse(res, {
+            statusCode: StatusCodes.NOT_FOUND,
+            success: false,
+            message: result.message
+        });
+    } else {
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: "Book borrowed successfully!",
+            data: result
+        });
+    }
 });
 
 const returnABook: RequestHandler = catchAsync(async (req, res, next) => {
@@ -57,12 +65,20 @@ const returnABook: RequestHandler = catchAsync(async (req, res, next) => {
 
     const result = await borrowRecordService.returnABook(data);
 
-    sendResponse(res, {
-        statusCode: StatusCodes.OK,
-        success: true,
-        message: "Book returned successfully!",
-        // data: result
-    });
+    if (result.success === false) {
+        sendResponse(res, {
+            statusCode: StatusCodes.NOT_FOUND,
+            success: false,
+            message: result.message
+        });
+    } else {
+        sendResponse(res, {
+            statusCode: StatusCodes.OK,
+            success: true,
+            message: "Book returned successfully!",
+            // data: result
+        });
+    }
 });
 
 
